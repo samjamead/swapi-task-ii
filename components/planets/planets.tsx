@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getPlanets } from "./actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -17,13 +17,22 @@ import PlanetsTableLoadingState from "../loading-states/planets-table-loading-st
 
 export default function Planets() {
   const [page, setPage] = useState(1);
-
+  const [showLoading, setShowLoading] = useState(false);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["planets", page],
     queryFn: () => getPlanets(page),
     retry: 2,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
+
+  useEffect(() => {
+    if (isLoading) {
+      setShowLoading(true);
+      setTimeout(() => {
+        setShowLoading(false);
+      }, 500);
+    }
+  }, [isLoading]);
 
   if (isError) {
     toast.error("Failed to load planets", {
@@ -52,8 +61,10 @@ export default function Planets() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading && <PlanetsTableLoadingState />}
+            {(showLoading || isLoading) && <PlanetsTableLoadingState />}
             {data &&
+              !showLoading &&
+              !isLoading &&
               data.planets.map((planet) => (
                 <TableRow key={planet.url}>
                   <TableCell>{planet.id.padStart(3, "0")}.</TableCell>
@@ -67,7 +78,7 @@ export default function Planets() {
         </Table>
       </div>
 
-      {data && (
+      {data && !showLoading && !isLoading && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
             Showing page {data.pagination.currentPage} of{" "}
