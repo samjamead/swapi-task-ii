@@ -28,7 +28,7 @@ export default function Header({
         <a
           href="https://github.com/samjamead/swapi-task-ii"
           target="_blank"
-          className="flex items-center gap-2 whitespace-nowrap rounded border px-3 py-2 font-mono text-xs transition-colors duration-300 hover:bg-blue-500/20"
+          className="flex items-center gap-2 whitespace-nowrap rounded border px-3 py-2 font-mono text-sm transition-colors duration-300 hover:bg-blue-500/20"
         >
           <Image
             src={GithubMarkWhite}
