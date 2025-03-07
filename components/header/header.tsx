@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import GithubMark from "@/public/github-mark.svg";
 import GithubMarkWhite from "@/public/github-mark-white.svg";
+import Link from "next/link";
 
 export default function Header({
   maxWidth,
@@ -19,7 +20,9 @@ export default function Header({
         )}
       >
         <div className="flex flex-col gap-2">
-          <h1 className="text-lg font-bold">SWAPI Task II</h1>
+          <Link href="/">
+            <h2 className="text-lg font-bold">SWAPI Task II</h2>
+          </Link>
           <p className="max-w-prose text-balance text-muted-foreground lg:text-nowrap">
             The libraries strike back
           </p>
