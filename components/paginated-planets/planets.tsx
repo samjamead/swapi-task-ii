@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPlanets } from "./actions";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -15,10 +16,11 @@ import { toast } from "sonner";
 import PlanetsTableLoadingState from "../loading-states/planets-table-loading-state";
 
 export default function Planets() {
+  const [page, setPage] = useState(1);
   const [showLoading, setShowLoading] = useState(false);
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["all-planets"],
-    queryFn: () => getPlanets(),
+    queryKey: ["planets", page],
+    queryFn: () => getPlanets(page),
     retry: 2,
     staleTime: 5 * 60 * 1000,
   });
@@ -80,6 +82,31 @@ export default function Planets() {
           </TableBody>
         </Table>
       </div>
+
+      {data && !showLoading && !isLoading && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Showing page {data.pagination.currentPage} of{" "}
+            {Math.ceil(data.pagination.total / 10)}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setPage((p) => p - 1)}
+              disabled={!data.pagination.hasPreviousPage}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setPage((p) => p + 1)}
+              disabled={!data.pagination.hasNextPage}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
