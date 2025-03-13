@@ -45,9 +45,9 @@ export default function Planets() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">
+        <h2 className="text-2xl font-bold">
           Behold, the planets of the Star Wars universe
-        </h1>
+        </h2>
       </div>
 
       <div className="rounded-md border">
