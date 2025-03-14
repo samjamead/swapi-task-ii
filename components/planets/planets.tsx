@@ -16,6 +16,7 @@ import PlanetsTableLoadingState from "../loading-states/planets-table-loading-st
 
 export default function Planets() {
   const [showLoading, setShowLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["all-planets"],
@@ -46,6 +47,20 @@ export default function Planets() {
         </h1>
       </div>
 
+      <div className="flex items-center justify-start gap-4">
+        <label htmlFor="search" className="text-sm font-medium">
+          Filter by planet name:
+        </label>
+        <input
+          id="search"
+          type="text"
+          value={searchValue}
+          placeholder="e.g. Alderaan"
+          onChange={(e) => setSearchValue(e.target.value)}
+          className="rounded-md border bg-foreground/10 px-2 py-1"
+        />
+      </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -62,19 +77,25 @@ export default function Planets() {
             {data &&
               !showLoading &&
               !isLoading &&
-              data.planets.map((planet) => (
-                <TableRow key={planet.url}>
-                  <TableCell>{planet.id}</TableCell>
-                  <TableCell className="font-medium">{planet.name}</TableCell>
-                  <TableCell>{planet.climate}</TableCell>
-                  <TableCell>{planet.terrain}</TableCell>
-                  <TableCell className="text-right">
-                    {planet.population !== "unknown"
-                      ? Number(planet.population).toLocaleString()
-                      : "--"}
-                  </TableCell>
-                </TableRow>
-              ))}
+              data.planets
+                .filter((planet) =>
+                  planet.name.toLowerCase().includes(searchValue.toLowerCase()),
+                )
+                .map((planet) => (
+                  <TableRow key={planet.url}>
+                    <TableCell className="text-muted-foreground">
+                      {planet.id}.
+                    </TableCell>
+                    <TableCell className="font-medium">{planet.name}</TableCell>
+                    <TableCell>{planet.climate}</TableCell>
+                    <TableCell>{planet.terrain}</TableCell>
+                    <TableCell className="text-right">
+                      {planet.population !== "unknown"
+                        ? Number(planet.population).toLocaleString()
+                        : "--"}
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </div>
