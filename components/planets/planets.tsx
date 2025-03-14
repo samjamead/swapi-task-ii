@@ -46,21 +46,21 @@ export default function Planets() {
           Behold, the planets of the Star Wars universe
         </h1>
       </div>
-
-      <div className="flex items-center justify-start gap-4">
-        <label htmlFor="search" className="text-sm font-medium">
-          Filter by planet name:
-        </label>
-        <input
-          id="search"
-          type="text"
-          value={searchValue}
-          placeholder="e.g. Alderaan"
-          onChange={(e) => setSearchValue(e.target.value)}
-          className="rounded-md border bg-foreground/10 px-2 py-1"
-        />
-      </div>
-
+      {data && !showLoading && !isLoading && (
+        <div className="flex items-center justify-start gap-4">
+          <label htmlFor="search" className="text-sm font-medium">
+            Filter by planet name:
+          </label>
+          <input
+            id="search"
+            type="text"
+            value={searchValue}
+            placeholder="e.g. Alderaan"
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="rounded-md border bg-foreground/10 px-2 py-1"
+          />
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
