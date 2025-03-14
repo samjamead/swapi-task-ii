@@ -11,11 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "sonner";
+import GenericError from "../error-states/generic-error";
 import PlanetsTableLoadingState from "../loading-states/planets-table-loading-state";
 
 export default function Planets() {
   const [showLoading, setShowLoading] = useState(false);
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["all-planets"],
     queryFn: () => getPlanets(),
@@ -34,10 +35,7 @@ export default function Planets() {
   }, [isLoading]);
 
   if (isError) {
-    toast.error("Failed to load planets", {
-      description:
-        error instanceof Error ? error.message : "Please try again later",
-    });
+    return <GenericError heading="Error" error={error.message} />;
   }
 
   return (
